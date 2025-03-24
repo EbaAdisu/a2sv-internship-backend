@@ -1,5 +1,3 @@
-//// filepath: /d:/Egos/a2sv/internship/a2sv-internship-backend/tasks/task3/library_management/docs/documentation.md
-
 # Library Management System Documentation
 
 ## Overview
@@ -118,7 +116,3 @@ The main loop reads the user choice as a string (using a buffered reader), conve
 3. Follow the on-screen prompts to interact with the library management system.
 
 ---
-
-```
-
-```
