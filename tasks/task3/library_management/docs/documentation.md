@@ -1,4 +1,3 @@
-```markdown
 //// filepath: /d:/Egos/a2sv/internship/a2sv-internship-backend/tasks/task3/library_management/docs/documentation.md
 
 # Library Management System Documentation
@@ -8,6 +7,7 @@
 The Library Management System is a simple console-based Go application that allows you to manage books and library members. It enables you to add and remove books, manage book borrowing and returns, list available/borrowed books, and add library members.
 
 ## Folder Structure
+
 ```
 
 library_management/
@@ -23,7 +23,7 @@ library_management/
 ├── main.go # Entry point; renders the main menu and handles user interaction.
 └── go.mod # Module file.
 
-````
+```
 
 ## Models
 
@@ -31,10 +31,10 @@ library_management/
 
 Defined in `models/book.go`:
 
-- **Id**: Unique identifier for the book.
-- **Title**: Book title.
-- **Author**: Book author.
-- **Status**: Book status (Available or Borrowed).
+-   **Id**: Unique identifier for the book.
+-   **Title**: Book title.
+-   **Author**: Book author.
+-   **Status**: Book status (Available or Borrowed).
 
 ```go
 type BookStatus string
@@ -50,7 +50,7 @@ type Book struct {
     Author string
     Status BookStatus
 }
-````
+```
 
 ### Member
 
