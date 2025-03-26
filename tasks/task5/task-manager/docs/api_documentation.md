@@ -38,8 +38,6 @@ Retrieves a list of all tasks.
 ]
 ```
 
-````
-
 ---
 
 ## 2. GET /tasks/:id
@@ -187,4 +185,7 @@ Deletes a task by its ID.
 3. **Add required headers** (e.g., `Content-Type: application/json` for POST and PUT requests).
 4. **Provide JSON request body** as shown in the examples for POST and PUT.
 5. **Send the request** and inspect the response to ensure it matches the expected output.
-````
+
+```
+
+```
