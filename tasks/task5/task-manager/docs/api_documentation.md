@@ -1,6 +1,3 @@
-Below is a sample API documentation in Markdown that clearly describes each endpoint along with example Postman request details, payloads, and responses.
-
-````markdown
 # Task Management API Documentation
 
 This documentation outlines all endpoints of the Task Management API along with sample requests and responses. Use Postman (or a similar tool) to test each endpoint.
@@ -40,19 +37,20 @@ Retrieves a list of all tasks.
     }
 ]
 ```
+
 ````
 
 ---
 
 ## 2. GET /tasks/:id
 
-**Description:**  
+**Description:**
 Retrieves details of a specific task by its ID.
 
 **Request:**
 
 -   **Method:** GET
--   **URL:** `http://localhost:8080/tasks/1`  
+-   **URL:** `http://localhost:8080/tasks/1`
     Replace `1` with the actual task ID.
 
 **Response:**
@@ -78,7 +76,7 @@ Retrieves details of a specific task by its ID.
 
 ## 3. POST /tasks
 
-**Description:**  
+**Description:**
 Creates a new task.
 
 **Request:**
@@ -119,13 +117,13 @@ Creates a new task.
 
 ## 4. PUT /tasks/:id
 
-**Description:**  
+**Description:**
 Updates an existing task.
 
 **Request:**
 
 -   **Method:** PUT
--   **URL:** `http://localhost:8080/tasks/1`  
+-   **URL:** `http://localhost:8080/tasks/1`
     Replace `1` with the actual task ID to update.
 -   **Headers:** `Content-Type: application/json`
 -   **Request Body Example:**
@@ -162,13 +160,13 @@ Updates an existing task.
 
 ## 5. DELETE /tasks/:id
 
-**Description:**  
+**Description:**
 Deletes a task by its ID.
 
 **Request:**
 
 -   **Method:** DELETE
--   **URL:** `http://localhost:8080/tasks/1`  
+-   **URL:** `http://localhost:8080/tasks/1`
     Replace `1` with the actual task ID.
 
 **Response:**
@@ -189,3 +187,4 @@ Deletes a task by its ID.
 3. **Add required headers** (e.g., `Content-Type: application/json` for POST and PUT requests).
 4. **Provide JSON request body** as shown in the examples for POST and PUT.
 5. **Send the request** and inspect the response to ensure it matches the expected output.
+````

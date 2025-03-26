@@ -14,6 +14,8 @@ my-task-manager
 │   └── task_service.go
 ├── models
 │   └── task.go
+├── docs
+│   └── api_documentation.md
 ├── main.go
 ├── go.mod
 └── README.md
@@ -32,7 +34,7 @@ my-task-manager
 
     ```
     git clone https://github.com/EbaAdisu/a2sv-internship-backend/
-    cd tasks/task5/library_management/task-manager
+    cd tasks/task5/task-manager
     ```
 
 2. Install dependencies:
