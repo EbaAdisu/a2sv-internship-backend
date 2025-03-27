@@ -34,7 +34,7 @@ my-task-manager
 
     ```
     git clone https://github.com/EbaAdisu/a2sv-internship-backend/
-    cd tasks/task5/task-manager
+    cd tasks/task6/task-manager
     ```
 
 2. Install dependencies:

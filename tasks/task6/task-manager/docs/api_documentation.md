@@ -1,8 +1,7 @@
 # Task Management API Documentation
 
-This documentation outlines all endpoints of the Task Management API along with sample requests and responses. Use Postman (or a similar tool) to test each endpoint.
-
----
+This documentation outlines all endpoints of the Task Management API along with sample requests and responses.  
+**Note:** This API uses MongoDB as its data store. Ensure that your MongoDB instance is running (default: `mongodb://localhost:27017`) and that the database and collection (`taskdb` and `tasks`) exist or will be created on first use. Task IDs are now represented as MongoDB ObjectIDs – 24-character hexadecimal strings.
 
 ## 1. GET /tasks
 
@@ -22,14 +21,14 @@ Retrieves a list of all tasks.
 ```json
 [
     {
-        "id": 1,
+        "id": "60a6b2fb1234567890abcdef",
         "title": "Example Task 1",
         "description": "This is a sample task description.",
         "due_date": "2025-03-30T00:00:00Z",
         "status": "pending"
     },
     {
-        "id": 2,
+        "id": "60a6b2fbabcdef1234567890",
         "title": "Example Task 2",
         "description": "Another task description.",
         "due_date": "2025-04-05T00:00:00Z",
@@ -42,14 +41,14 @@ Retrieves a list of all tasks.
 
 ## 2. GET /tasks/:id
 
-**Description:**
-Retrieves details of a specific task by its ID.
+**Description:**  
+Retrieves details of a specific task by its ID. Remember to use a valid MongoDB ObjectID (24-character hex string).
 
 **Request:**
 
 -   **Method:** GET
--   **URL:** `http://localhost:8080/tasks/1`
-    Replace `1` with the actual task ID.
+-   **URL:** `http://localhost:8080/tasks/60a6b2fb1234567890abcdef`  
+    Replace with the actual task ID.
 
 **Response:**
 
@@ -58,7 +57,7 @@ Retrieves details of a specific task by its ID.
 
 ```json
 {
-    "id": 1,
+    "id": "60a6b2fb1234567890abcdef",
     "title": "Example Task 1",
     "description": "This is a sample task description.",
     "due_date": "2025-03-30T00:00:00Z",
@@ -74,8 +73,8 @@ Retrieves details of a specific task by its ID.
 
 ## 3. POST /tasks
 
-**Description:**
-Creates a new task.
+**Description:**  
+Creates a new task. The provided task data will be stored in MongoDB and an ObjectID will be generated.
 
 **Request:**
 
@@ -96,11 +95,11 @@ Creates a new task.
 **Response:**
 
 -   **Status Code:** 201 Created
--   **Body Example:** (The response JSON includes a generated task id.)
+-   **Body Example:** (The response JSON includes a generated MongoDB ObjectID.)
 
 ```json
 {
-    "id": 3,
+    "id": "60a6b2fbabcdef1234567890",
     "title": "New Task",
     "description": "Details of the new task.",
     "due_date": "2025-04-15T00:00:00Z",
@@ -115,14 +114,14 @@ Creates a new task.
 
 ## 4. PUT /tasks/:id
 
-**Description:**
-Updates an existing task.
+**Description:**  
+Updates an existing task. Use a valid MongoDB ObjectID for the task ID.
 
 **Request:**
 
 -   **Method:** PUT
--   **URL:** `http://localhost:8080/tasks/1`
-    Replace `1` with the actual task ID to update.
+-   **URL:** `http://localhost:8080/tasks/60a6b2fbabcdef1234567890`  
+    Replace with the actual task ID to update.
 -   **Headers:** `Content-Type: application/json`
 -   **Request Body Example:**
 
@@ -142,7 +141,7 @@ Updates an existing task.
 
 ```json
 {
-    "id": 1,
+    "id": "60a6b2fbabcdef1234567890",
     "title": "Updated Task Title",
     "description": "Updated description of the task.",
     "due_date": "2025-04-20T00:00:00Z",
@@ -158,14 +157,14 @@ Updates an existing task.
 
 ## 5. DELETE /tasks/:id
 
-**Description:**
-Deletes a task by its ID.
+**Description:**  
+Deletes a task by its ID. Provide a valid MongoDB ObjectID.
 
 **Request:**
 
 -   **Method:** DELETE
--   **URL:** `http://localhost:8080/tasks/1`
-    Replace `1` with the actual task ID.
+-   **URL:** `http://localhost:8080/tasks/60a6b2fbabcdef1234567890`  
+    Replace with the actual task ID.
 
 **Response:**
 
@@ -178,14 +177,27 @@ Deletes a task by its ID.
 
 ---
 
+## Additional MongoDB Integration Details
+
+-   **MongoDB Driver:** This API uses the official MongoDB Go Driver (`go.mongodb.org/mongo-driver/mongo`).
+-   **Database & Collection:** The application connects to a MongoDB instance at `mongodb://localhost:27017` by default, uses the database `taskdb` and the collection `tasks`.
+-   **ObjectID:** Task IDs are managed by MongoDB as ObjectIDs. When creating tasks, a new ObjectID is generated and included in the response.
+
+---
+
 ## Testing with Postman
 
-1. **Create a new request in Postman.**
-2. **Set the request method and URL** according to the endpoint you’re testing.
-3. **Add required headers** (e.g., `Content-Type: application/json` for POST and PUT requests).
-4. **Provide JSON request body** as shown in the examples for POST and PUT.
-5. **Send the request** and inspect the response to ensure it matches the expected output.
+1. **Create a New Request:**  
+   Set the request method (GET, POST, PUT, DELETE) and URL based on the endpoint you are testing.
 
-```
+2. **Set Headers:**  
+   For POST and PUT requests, add `Content-Type: application/json`.
 
-```
+3. **Provide Request Body:**  
+   For POST and PUT, input the JSON payload as shown in the examples above.
+
+4. **Send the Request and Inspect the Response:**  
+   Ensure that the returned values (including generated MongoDB ObjectIDs) match the expected output.
+
+5. **Verify in MongoDB:**  
+   Optionally, use MongoDB Compass or the Mongo shell to directly confirm that tasks are being created, updated, and deleted in the database.
