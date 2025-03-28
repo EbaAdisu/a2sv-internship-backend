@@ -1,17 +1,98 @@
 # Task Management API Documentation
 
 This documentation outlines all endpoints of the Task Management API along with sample requests and responses.  
-**Note:** This API uses MongoDB as its data store. Ensure that your MongoDB instance is running (default: `mongodb://localhost:27017`) and that the database and collection (`taskdb` and `tasks`) exist or will be created on first use. Task IDs are now represented as MongoDB ObjectIDs – 24-character hexadecimal strings.
+**Note:**
 
-## 1. GET /tasks
+-   This API uses JWT-based authentication and MongoDB as its datastore.
+-   Ensure your MongoDB instance is running at `mongodb://localhost:27017`.
+-   The application uses the database `taskdb` and the collections `tasks` and `users`.
+-   Task IDs and User IDs are represented as MongoDB ObjectIDs – 24-character hexadecimal strings.
+
+---
+
+## User Authentication
+
+### Register
 
 **Description:**  
-Retrieves a list of all tasks.
+Creates a new user account. The very first user created will be assigned the role of `admin`; subsequent users will have the role `user` by default.
+
+**Request:**
+
+-   **Method:** POST
+-   **URL:** `http://localhost:8080/register`
+-   **Headers:** `Content-Type: application/json`
+-   **Request Body Example:**
+
+```json
+{
+    "username": "johndoe",
+    "password": "securepassword"
+}
+```
+
+**Response:**
+
+-   **Status Code:** 201 Created
+-   **Body Example:**
+
+```json
+{
+    "id": "60a6b2fbabcdef1234567890",
+    "username": "johndoe",
+    "role": "admin"
+}
+```
+
+### Login
+
+**Description:**  
+Authenticates a user and returns a JWT token upon successful login.
+
+**Request:**
+
+-   **Method:** POST
+-   **URL:** `http://localhost:8080/login`
+-   **Headers:** `Content-Type: application/json`
+-   **Request Body Example:**
+
+```json
+{
+    "username": "johndoe",
+    "password": "securepassword"
+}
+```
+
+**Response:**
+
+-   **Status Code:** 200 OK
+-   **Body Example:**
+
+```json
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+---
+
+## Task Endpoints
+
+**Authentication Requirement:**  
+All task endpoints require a valid JWT token provided in the `Authorization` header in the following format:  
+er`Authorization: Bear <token>`
+
+### Get All Tasks
+
+**Description:**  
+Retrieves a list of all tasks. Accessible by any authenticated user.
 
 **Request:**
 
 -   **Method:** GET
 -   **URL:** `http://localhost:8080/tasks`
+-   **Headers:**
+    -   `Authorization: Bearer <token>`
 
 **Response:**
 
@@ -37,22 +118,22 @@ Retrieves a list of all tasks.
 ]
 ```
 
----
-
-## 2. GET /tasks/:id
+### Get Task by ID
 
 **Description:**  
-Retrieves details of a specific task by its ID. Remember to use a valid MongoDB ObjectID (24-character hex string).
+Retrieves details of a specific task by its ID. Use a valid MongoDB ObjectID.
 
 **Request:**
 
 -   **Method:** GET
 -   **URL:** `http://localhost:8080/tasks/60a6b2fb1234567890abcdef`  
-    Replace with the actual task ID.
+    _(Replace with the actual task ID)_
+-   **Headers:**
+    -   `Authorization: Bearer <token>`
 
 **Response:**
 
--   **Status Code:** 200 OK (on success)
+-   **Status Code:** 200 OK
 -   **Body Example:**
 
 ```json
@@ -69,18 +150,18 @@ Retrieves details of a specific task by its ID. Remember to use a valid MongoDB 
     -   **400 Bad Request:** Invalid task ID.
     -   **404 Not Found:** Task not found.
 
----
-
-## 3. POST /tasks
+### Create Task (Admin Only)
 
 **Description:**  
-Creates a new task. The provided task data will be stored in MongoDB and an ObjectID will be generated.
+Creates a new task. Only authenticated users with the `admin` role can access this endpoint.
 
 **Request:**
 
 -   **Method:** POST
 -   **URL:** `http://localhost:8080/tasks`
--   **Headers:** `Content-Type: application/json`
+-   **Headers:**
+    -   `Authorization: Bearer <token>`
+    -   `Content-Type: application/json`
 -   **Request Body Example:**
 
 ```json
@@ -95,7 +176,7 @@ Creates a new task. The provided task data will be stored in MongoDB and an Obje
 **Response:**
 
 -   **Status Code:** 201 Created
--   **Body Example:** (The response JSON includes a generated MongoDB ObjectID.)
+-   **Body Example:**
 
 ```json
 {
@@ -109,20 +190,21 @@ Creates a new task. The provided task data will be stored in MongoDB and an Obje
 
 -   **Error Response:**
     -   **400 Bad Request:** Invalid input data.
+    -   **403 Forbidden:** Insufficient privileges (if non-admin).
 
----
-
-## 4. PUT /tasks/:id
+### Update Task (Admin Only)
 
 **Description:**  
-Updates an existing task. Use a valid MongoDB ObjectID for the task ID.
+Updates an existing task. Only accessible by users with the `admin` role.
 
 **Request:**
 
 -   **Method:** PUT
 -   **URL:** `http://localhost:8080/tasks/60a6b2fbabcdef1234567890`  
-    Replace with the actual task ID to update.
--   **Headers:** `Content-Type: application/json`
+    _(Replace with the actual task ID)_
+-   **Headers:**
+    -   `Authorization: Bearer <token>`
+    -   `Content-Type: application/json`
 -   **Request Body Example:**
 
 ```json
@@ -137,7 +219,7 @@ Updates an existing task. Use a valid MongoDB ObjectID for the task ID.
 **Response:**
 
 -   **Status Code:** 200 OK
--   **Body Example:** (Returns the updated task.)
+-   **Body Example:**
 
 ```json
 {
@@ -152,19 +234,20 @@ Updates an existing task. Use a valid MongoDB ObjectID for the task ID.
 -   **Error Responses:**
     -   **400 Bad Request:** Invalid input or task ID.
     -   **404 Not Found:** Task not found.
+    -   **403 Forbidden:** Insufficient privileges (if non-admin).
 
----
-
-## 5. DELETE /tasks/:id
+### Delete Task (Admin Only)
 
 **Description:**  
-Deletes a task by its ID. Provide a valid MongoDB ObjectID.
+Deletes a task by its ID. Only accessible by users with the `admin` role.
 
 **Request:**
 
 -   **Method:** DELETE
 -   **URL:** `http://localhost:8080/tasks/60a6b2fbabcdef1234567890`  
-    Replace with the actual task ID.
+    _(Replace with the actual task ID)_
+-   **Headers:**
+    -   `Authorization: Bearer <token>`
 
 **Response:**
 
@@ -174,30 +257,31 @@ Deletes a task by its ID. Provide a valid MongoDB ObjectID.
 -   **Error Responses:**
     -   **400 Bad Request:** Invalid task ID.
     -   **404 Not Found:** Task not found.
+    -   **403 Forbidden:** Insufficient privileges (if non-admin).
 
 ---
 
 ## Additional MongoDB Integration Details
 
--   **MongoDB Driver:** This API uses the official MongoDB Go Driver (`go.mongodb.org/mongo-driver/mongo`).
--   **Database & Collection:** The application connects to a MongoDB instance at `mongodb://localhost:27017` by default, uses the database `taskdb` and the collection `tasks`.
--   **ObjectID:** Task IDs are managed by MongoDB as ObjectIDs. When creating tasks, a new ObjectID is generated and included in the response.
+-   **MongoDB Driver:**  
+    This API uses the official MongoDB Go Driver (`go.mongodb.org/mongo-driver/mongo`).
+-   **Database & Collection:**  
+    The application connects to a MongoDB instance at `mongodb://localhost:27017`, uses the database `taskdb` and the collections `tasks` and `users`.
+-   **ObjectID:**  
+    Task and User IDs are managed by MongoDB as ObjectIDs. When creating tasks or users, a new ObjectID is generated and included in the response.
 
 ---
 
 ## Testing with Postman
 
-1. **Create a New Request:**  
-   Set the request method (GET, POST, PUT, DELETE) and URL based on the endpoint you are testing.
-
-2. **Set Headers:**  
-   For POST and PUT requests, add `Content-Type: application/json`.
-
-3. **Provide Request Body:**  
-   For POST and PUT, input the JSON payload as shown in the examples above.
-
-4. **Send the Request and Inspect the Response:**  
-   Ensure that the returned values (including generated MongoDB ObjectIDs) match the expected output.
-
-5. **Verify in MongoDB:**  
-   Optionally, use MongoDB Compass or the Mongo shell to directly confirm that tasks are being created, updated, and deleted in the database.
+1. **User Registration and Login:**
+    - Create a new request with method POST to `http://localhost:8080/register` to create a new account.
+    - Use POST to `http://localhost:8080/login` with your credentials to receive a JWT token.
+2. **Using JWT Token:**
+    - For protected endpoints (tasks), add the header:  
+      `Authorization: Bearer <token>` (with your received token).
+3. **Task Management:**
+    - Test GET, POST, PUT, DELETE endpoints as described above.
+    - Verify responses and match ObjectID formats.
+4. **Check MongoDB Directly:**
+    - Optionally, use MongoDB Compass or the Mongo shell to verify that your tasks and users are stored correctly.
