@@ -71,8 +71,8 @@ task-manager/
 1. **Clone the Repository:**
 
     ```shell
-    git clone https://github.com/yourusername/task-manager.git
-    cd task-manager
+    git clone https://github.com/EbaAdisu/a2sv-internship-backend/
+    cd tasks/task8/task-manager
     ```
 
 2. **Install Dependencies:**
