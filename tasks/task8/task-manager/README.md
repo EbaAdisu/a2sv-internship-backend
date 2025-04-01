@@ -43,7 +43,7 @@ task-manager/
 │ ├── controllers/
 │ │ └── controller.go # HTTP handlers that process requests, invoke use cases, and return responses.
 │ └── routers/
-│ └── router.go # Defines API endpoints and applies necessary middleware.
+│ └──── router.go # Defines API endpoints and applies necessary middleware.
 ├── Domain/
 │ └── domain.go # Domain models representing the core business entities: Task and User.
 ├── Infrastructure/
@@ -54,8 +54,8 @@ task-manager/
 │ ├── task_repository.go # Data access layer for tasks.
 │ └── user_repository.go # Data access layer for users.
 └── Usecases/
-├── task_usecases.go # Business logic for tasks, including CRUD operations and get task by ID.
-└── user_usecases.go # Business logic for user registration and login.
+├──── task_usecases.go # Business logic for tasks, including CRUD operations and get task by ID.
+└──── user_usecases.go # Business logic for user registration and login.
 
 ```
 
@@ -74,8 +74,6 @@ task-manager/
     git clone https://github.com/yourusername/task-manager.git
     cd task-manager
     ```
-
-````
 
 2. **Install Dependencies:**
 
@@ -162,10 +160,3 @@ Contributions are welcome.
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin feature/your-feature`
 5. Create a new Pull Request.
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-```
-````
